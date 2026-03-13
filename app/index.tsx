@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -36,9 +37,9 @@ export default function Programas() {
   const cargarProgramas = (termino = "") => {
     let result = termino
       ? db.getAllSync<Programa>(
-          "SELECT * FROM programas WHERE codigo LIKE ? OR nombre LIKE ?",
-          [`%${termino}%`, `%${termino}%`],
-        )
+        "SELECT * FROM programas WHERE codigo LIKE ? OR nombre LIKE ?",
+        [`%${termino}%`, `%${termino}%`],
+      )
       : db.getAllSync<Programa>("SELECT * FROM programas");
     setProgramas(result);
   };
@@ -83,7 +84,7 @@ export default function Programas() {
   };
 
   const ejecutarEliminacion = () => {
-   if (codigoAEliminar) {
+    if (codigoAEliminar) {
       try {
         const resultado = db.getFirstSync<{ total: number }>(
           "SELECT COUNT(*) as total FROM estudiantes WHERE programa_cod = ?",
@@ -112,18 +113,10 @@ export default function Programas() {
     <SafeAreaView style={styles.Area}>
       <View style={styles.container}>
         <View style={styles.headerCentrado}>
-          <Text style={styles.titleCentrado}>Gestión de Programas</Text>
+          <Text style={styles.titleCentrado}>Lista de Programas</Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.botonCrearPrincipal}
-          onPress={() => {
-            setEditando(false);
-            setModalVisible(true);
-          }}
-        >
-          <Text style={styles.textoBotonBlanco}>Crear Nuevo Programa</Text>
-        </TouchableOpacity>
+
 
         <TextInput
           style={styles.searchInput}
@@ -160,7 +153,7 @@ export default function Programas() {
                     })
                   }
                 >
-                  <Text style={styles.textoBotonRojoSm}>Ver Estudiantes</Text>
+                  <Text style={styles.textoBotonRojoSm}>Ver estudiantes</Text>
                 </TouchableOpacity>
               </View>
 
@@ -170,20 +163,28 @@ export default function Programas() {
                   style={styles.btnIconoEditar}
                   onPress={() => abrirModalEditar(item)}
                 >
-                  <Text style={styles.textoBtnIcono}>✏️  Editar
-                  </Text>
+                  <Ionicons name="create" size={20} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.btnIconoBorrar}
                   onPress={() => solicitarEliminar(item.codigo)}
                 >
-                  <Text style={styles.textoBtnIcono}>🗑️  Borrar</Text>
+                  <Ionicons name="trash" size={20} color="white" />
                 </TouchableOpacity>
               </View>
             </View>
           )}
         />
-          {/* Modal editar*/}
+        <TouchableOpacity
+          style={styles.botonCrearPrograma}
+          onPress={() => {
+            setEditando(false);
+            setModalVisible(true);
+          }}
+        >
+          <Text style={styles.textoBotonBlanco}>Crear nuevo programa</Text>
+        </TouchableOpacity>
+        {/* Modal editar*/}
         <Modal visible={modalVisible} animationType="fade" transparent={true}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
@@ -227,15 +228,15 @@ export default function Programas() {
                 Se borrarán todos los datos del programa.
               </Text>
               <View style={styles.filaBotonesConfirmar}>
-                <TouchableOpacity 
-                  style={styles.btnConfirmarEliminar} 
+                <TouchableOpacity
+                  style={styles.btnConfirmarEliminar}
                   onPress={ejecutarEliminacion}
                 >
                   <Text style={styles.textoBotonBlanco}>Sí, eliminar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
-                  style={styles.btnConfirmarCancelar} 
+                <TouchableOpacity
+                  style={styles.btnConfirmarCancelar}
                   onPress={() => setConfirmarVisible(false)}
                 >
                   <Text style={styles.textoBotonGris}>No, cancelar</Text>
@@ -244,17 +245,22 @@ export default function Programas() {
             </View>
           </View>
         </Modal>
+
       </View>
     </SafeAreaView>
+
+
   );
-  
+
+
+
 }
 
 
 const styles = StyleSheet.create({
   Area: {
     flex: 1,
-    backgroundColor: "#e9e7e7",
+    backgroundColor: "#ffffff",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: { flex: 1, padding: 25 },
@@ -274,26 +280,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  // Botones Superiores
-  botonCrearPrincipal: {
-    backgroundColor: "#c49b14",
+  // Botones
+  botonCrearPrograma: {
+    backgroundColor: "#5dc8ba",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
     marginBottom: 15,
   },
-  textoBotonBlanco: { 
-    color: "#FFF", 
+  textoBotonBlanco: {
+    color: "#FFF",
     fontWeight: "bold",
     fontSize: 17,
   },
-  textoBotonRojo: {
-    color: "#C4142B",
-    fontWeight: "bold",
+  textoBotonRojoSm: {
+    color: "#550510",
     textAlign: "center",
-    marginTop: 10,
+    margin: 2,
   },
-  textoBotonRojoSm: { color: "#C4142B", fontWeight: "bold", fontSize: 13 },
 
   // Buscador
   searchInput: {
@@ -317,47 +321,51 @@ const styles = StyleSheet.create({
     borderBottomColor: "#F0F0F0",
     justifyContent: "space-between",
   },
-  columnaInfo: { 
+  columnaInfo: {
     flex: 1.5
-   }, 
-  columnaAccionVer: { 
-    flex: 2, 
-    alignItems: "center" 
+  },
+  columnaAccionVer: {
+    flex: 2,
+    alignItems: "center"
   },
   columnaBotones: {
     flex: 1,
     justifyContent: "flex-end",
     gap: 5
   },
-  textoPrincipal: { 
-    fontSize: 15, 
-    fontWeight: '600', 
-    color: '#333' 
+  textoPrincipal: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#000000'
   },
-  textoSecundario: { 
-    fontSize: 12, 
-    color: '#777', 
-    marginTop: 3 
+  textoSecundario: {
+    fontSize: 12,
+    color: '#000000',
+    marginTop: 3
   },
 
 
   // Botones
   botonVer: {
-    backgroundColor: "#f0fffe",
+    backgroundColor: "#5dc8ba",
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: "#7dc8eb",
+    borderColor: "#5dc8ba",
   },
-  btnIconoEditar: { 
-    backgroundColor: "#E3F2FD", 
-    padding: 8, 
-    borderRadius: 6 },
-  btnIconoBorrar: { 
-    backgroundColor: "#FFEBEE", 
-    padding: 8, 
-    borderRadius: 6 },
+  btnIconoEditar: {
+    alignItems:"center",
+    backgroundColor: "#59cdbd",
+    padding: 8,
+    borderRadius: 20
+  },
+  btnIconoBorrar: {
+    alignItems:"center",
+    backgroundColor: "#ef6a7e",
+    padding: 8,
+    borderRadius: 20
+  },
   textoBtnIcono: { fontSize: 14 },
 
   // Modal
@@ -387,14 +395,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   botonGuardar: {
-    backgroundColor: "#1ac414",
+    backgroundColor: "#59cdbd",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
   },
   botonCerrar: {
-    backgroundColor: "#C4142B",
+    backgroundColor: "#ef6a7e",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -416,13 +424,13 @@ const styles = StyleSheet.create({
   confirmTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#000000',
     marginBottom: 10,
     textAlign: 'center',
   },
   confirmSubtitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#0e0e0e',
     textAlign: 'center',
     marginBottom: 20,
     lineHeight: 20,
@@ -432,7 +440,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   btnConfirmarEliminar: {
-    backgroundColor: '#C4142B',
+    backgroundColor: '#a02c3d',
     padding: 14,
     borderRadius: 10,
     alignItems: 'center',
@@ -446,7 +454,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   textoBotonGris: {
-    color: '#666',
+    color: '#000000',
     fontWeight: 'bold',
     fontSize: 15,
   },

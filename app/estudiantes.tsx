@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -78,7 +79,7 @@ export default function EstudiantesScreen() {
       setModalVisible(false);
       cargarEstudiantes();
     } catch (e) {
-      Alert.alert("Error", "Código duplicado o programa no existe");
+      Alert.alert("Error", "Código erronéo, duplicado o programa no existe");
     }
   };
   const solicitarEliminar = (cod: string) => {
@@ -105,26 +106,6 @@ export default function EstudiantesScreen() {
           </Text>
         </View>
 
-        <View style={styles.filaBotonesSuperiores}>
-          <Link href="/" asChild>
-            <TouchableOpacity style={styles.botonAccionClaro}>
-              <Text style={styles.textoBotonRojoSm}>Regresar a Programas</Text>
-            </TouchableOpacity>
-          </Link>
-          <TouchableOpacity
-            style={styles.botonCrear}
-            onPress={() => {
-              setEditando(false);
-              setCodigo("");
-              setNombre("");
-              setEmail("");
-              setModalVisible(true);
-            }}
-          >
-            <Text style={styles.textoBotonBlanco}> Registrar Estudiante</Text>
-          </TouchableOpacity>
-        </View>
-
         <TextInput
           style={styles.searchInput}
           placeholder="Buscar estudiante por nombre o código..."
@@ -139,7 +120,7 @@ export default function EstudiantesScreen() {
           data={estudiantes}
           keyExtractor={(item) => item.codigo}
           renderItem={({ item }) => (
-            <View style={styles.filaTabla}>
+            <View style={styles.lista}>
               {/* Nombre y codigo del estudiante */}
               <View style={styles.columnaInfo}>
                 <Text style={styles.textoPrincipal}>{item.nombre}</Text>
@@ -166,20 +147,40 @@ export default function EstudiantesScreen() {
                     setModalVisible(true);
                   }}
                 >
-                  <Text style={styles.textoBtnIcono}>✏️ Editar</Text>
+                 <Ionicons name="create" size={20} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.btnIconoBorrar}
                   onPress={() => solicitarEliminar(item.codigo)}
                 >
-                  <Text style={styles.textoBtnIcono}>🗑️ Borrar</Text>
+                  <Ionicons name="trash" size={20} color="white" />
                 </TouchableOpacity>
               </View>
             </View>
           )}
         />
 
-        {/* Modal editar*/}
+        <View style={styles.filaBotonesSuperiores}>
+          <Link href="/" asChild>
+            <TouchableOpacity style={styles.botonAccionClaro}>
+              <Text style={styles.textoBotonRojoSm}>Regresar a Programas</Text>
+            </TouchableOpacity>
+          </Link>
+          <TouchableOpacity
+            style={styles.botonCrear}
+            onPress={() => {
+              setEditando(false);
+              setCodigo("");
+              setNombre("");
+              setEmail("");
+              setModalVisible(true);
+            }}
+          >
+            <Text style={styles.textoBotonBlanco}> Registrar Estudiante</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* modal editar datos*/}
         <Modal visible={modalVisible} transparent animationType="slide">
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
@@ -221,7 +222,7 @@ export default function EstudiantesScreen() {
               />
 
               <TouchableOpacity style={styles.botonGuardar} onPress={guardar}>
-                <Text style={styles.textoBotonBlanco}>Guardar Datos</Text>
+                <Text style={styles.textoBotonBlanco}>Guardar datos</Text>
               </TouchableOpacity>
               <TouchableOpacity  style={styles.botonCerrar} onPress={() => setModalVisible(false)}>
                 <Text style={styles.textoBotonBlanco}>Cancelar</Text>
@@ -229,13 +230,14 @@ export default function EstudiantesScreen() {
             </View>
           </View>
         </Modal>
-        {/* Modal borrar */}
+
+        {/* modal borrar datos */}
         <Modal visible={confirmarVisible} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.modalConfirmBox}>
               <Text style={styles.confirmTitle}>¿Confirmar eliminación?</Text>
               <Text style={styles.confirmSubtitle}>
-                Se borrarán todos los datos del programa.
+                Se borrarán todos los datos del estudiante.
               </Text>
               <View style={styles.filaBotonesConfirmar}>
                 <TouchableOpacity
@@ -263,12 +265,12 @@ export default function EstudiantesScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#e9e7e7",
+    backgroundColor: "#ffffff",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: { flex: 1, padding: 16 },
 
-  // Header
+  // header
   headerCentrado: {
     alignItems: "center",
     marginBottom: 20,
@@ -283,7 +285,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  // Botones Superiores
+  // botones primarios
   filaBotonesSuperiores: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -295,11 +297,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: "#C4142B",
+    borderColor: "#ef6a7e",
     backgroundColor: "#FFF",
   },
   botonCrear: {
-    backgroundColor: "#c49b14",
+    backgroundColor: "#59cdbd",
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 8,
@@ -310,18 +312,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold" 
   },
   textoBotonRojoSm: { 
-    color: "#C4142B", 
+    color: "#ef6a7e", 
     fontWeight: "bold", 
     fontSize: 13 
   },
   textoBotonRojo: {
-    color: "#C4142B",
+    color: "#ef6a7e",
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 15,
   },
 
-  // Buscador
+  // buscador
   searchInput: {
     backgroundColor: "#FFF",
     borderWidth: 1,
@@ -331,8 +333,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  // Tabla
-  filaTabla: {
+  // lista
+  lista: {
     flexDirection: "row",
     backgroundColor: "#FFF",
     padding: 17,
@@ -371,20 +373,22 @@ const styles = StyleSheet.create({
     color: "#555" 
   },
 
-  // Botones 
+  // botones 
   btnIconoEditar: { 
-    backgroundColor: "#E3F2FD", 
-    padding: 10, 
-    borderRadius: 6 
+   alignItems:"center",
+    backgroundColor: "#59cdbd",
+    padding: 8,
+    borderRadius: 20
   },
   btnIconoBorrar: { 
-    backgroundColor: "#FFEBEE", 
-    padding: 10, 
-    borderRadius: 6
+    alignItems:"center",
+    backgroundColor: "#ef6a7e",
+    padding: 8,
+    borderRadius: 20
   },
   textoBtnIcono: { fontSize: 16 },
 
-  // Modal
+  // fondos alertas
  modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -411,20 +415,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   botonGuardar: {
-    backgroundColor: "#1ac414",
+    backgroundColor: "#59cdbd",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
   },
   botonCerrar: {
-    backgroundColor: "#C4142B",
+    backgroundColor: "#ef6a7e",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
   },
-  // --- modal borrar ---
+  // modal borrar
   modalConfirmBox: {
     width: '80%',
     backgroundColor: '#FFF',
@@ -456,7 +460,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   btnConfirmarEliminar: {
-    backgroundColor: '#C4142B',
+    backgroundColor: '#a02c3d',
     padding: 14,
     borderRadius: 10,
     alignItems: 'center',
