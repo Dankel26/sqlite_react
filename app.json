@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "sqlite-react",
-    "slug": "sqlite-react",
+    "name": "SQLite-Actividad",
+    "slug": "SQLite-Actividad",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "sqlitereact",
+    "scheme": "sqliteactividad",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -38,7 +38,9 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-sqlite"
+      
     ],
     "experiments": {
       "typedRoutes": true,
