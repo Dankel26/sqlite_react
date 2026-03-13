@@ -181,7 +181,7 @@ export default function EstudiantesScreen() {
         </View>
 
         {/* modal editar datos*/}
-        <Modal visible={modalVisible} transparent animationType="slide">
+        <Modal visible={modalVisible} animationType="fade" transparent={true} >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>
